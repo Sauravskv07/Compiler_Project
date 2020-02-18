@@ -1,7 +1,7 @@
 typedef struct {
     char* key;
     int index;
-    type tag;
+    Type tag;
 } ht_item;
 
 typedef struct {
