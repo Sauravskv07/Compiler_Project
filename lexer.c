@@ -1,5 +1,5 @@
 #include "lexer.h"
-
+#include "hash_table.h"
 
 state=1;
 LN=1;
@@ -27,7 +27,7 @@ FILE * getStream(FILE* fp)
 	}	
 }
 
-Token* createToken(int type,int bp,int fp, int ln)
+Token* createToken(int index,int bp,int fp, int ln)
 {
 	Token* temp=(Token*) malloc(sizeof(Token));
 	
@@ -38,19 +38,19 @@ Token* createToken(int type,int bp,int fp, int ln)
 		temp->lexeme[i-bp]=buffer[i];
 	temp->lexeme[i]='\0';
 
-	temp->token_type=type;
+	temp->index=index;
 	temp->LN=ln;
 	temp->val.i_val=0;
 
-	if(type==ID)
+	if(index==ht_search(mapping_table,"ID")->index)
 	{}
 
-	if(type==NUM)
+	if(index==ht_search(mapping_table,"NUM")->index)
 	{	
 	
 	}
 
-	else if(type==RNUM)
+	else if(index==ht_search(mapping_table,"RNUM")->index)
 	{}
 
 	return temp;
@@ -85,27 +85,27 @@ Token* getNextToken()
 				}
 				if(character_read=='(')
 				{
-					return createToken(BO,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"BO")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read==')')
 				{
-					return createToken(BC,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"BC")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read=='+')
 				{
-					return createToken(PLUS,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"PLUS")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read=='-')
 				{
-					return createToken(MINUS,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"MINUS")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read=='[')
 				{
-					return createToken(SQBO,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"SQBO")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read==']')
 				{
-					return createToken(SQBC,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"SQBC")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read=='\n')
 				{
@@ -118,11 +118,11 @@ Token* getNextToken()
 				}
 				else if(character_read=='/')
 				{
-					return createToken(DIV,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"DIV")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read==';')
 				{
-					return createToken(SEMICOL,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"SEMICOL")->index,backPointer,forwardPointer,LN);
 				}
 				else if(character_read=='<')
 				{
@@ -168,12 +168,12 @@ Token* getNextToken()
 			{
 				if(character_read=='=')
 				{
-					return createToken(ASSIGNOP,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"ASSIGNOP")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{
 					forwardPointer--;
-					return createToken(COLON,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"COLON")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -185,12 +185,12 @@ Token* getNextToken()
 				}
 				else if(character_read=='=')
 				{
-					return createToken(LE,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"LE")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{	
 					forwardPointer--;
-					return createToken(LT,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"LT")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -199,12 +199,12 @@ Token* getNextToken()
 
 				if(character_read=='<')
 				{
-					return createToken(DRIVERDEF,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"DRIVERDEF")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{
 					forwardPointer--;
-					return createToken(DEF,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"DEF")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -216,12 +216,12 @@ Token* getNextToken()
 				}
 				else if(character_read=='=')
 				{
-					return createToken(GE,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"GE")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{
 					forwardPointer--;
-					return createToken(GT,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"GT")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -230,12 +230,12 @@ Token* getNextToken()
 
 				if(character_read=='>')
 				{
-					return createToken(ENDDRIVERDEF,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"ENDDRIVERDEF")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{
 					forwardPointer--;
-					return createToken(ENDDEF,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"ENDDEF")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -243,12 +243,12 @@ Token* getNextToken()
 			{
 				if(character_read=='.')
 				{
-					return createToken(RANGEOP,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"RANGEOP")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{
 					forwardPointer--;
-					return createToken(ERROR,backPointer,forwardPointer,LN);
+					return createToken(-1,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -271,12 +271,12 @@ Token* getNextToken()
 			{
 				if(character_read=='=')
 				{
-					return createToken(EQ,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"EQ")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{
 					forwardPointer--;
-					return createToken(ERROR,backPointer,forwardPointer,LN);
+					return createToken(-1,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -284,12 +284,12 @@ Token* getNextToken()
 			{
 				if(character_read=='=')
 				{
-					return createToken(NE,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"NE")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{
 					forwardPointer--;
-					return createToken(ERROR,backPointer,forwardPointer,LN);
+					return createToken(-1,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -304,7 +304,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer--;
-					return createToken(ID,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"ID")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -317,7 +317,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer--;
-					return createToken(MUL,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"MUL")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}	
@@ -364,7 +364,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer--;
-					return createToken(NUM,backPointer,forwardPointer,LN);			
+					return createToken(ht_search(mapping_table,"NUM")->index,backPointer,forwardPointer,LN);		
 				}
 				break;
 			}
@@ -373,7 +373,7 @@ Token* getNextToken()
 				if(character_read=='.')
 				{
 					forwardPointer-=2;
-					return createToken(NUM,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"NUM")->index,backPointer,forwardPointer,LN);
 				}
 				else if('0'<= character_read && character_read<='9')
 				{
@@ -382,7 +382,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer--;
-					return createToken(NUM,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"NUM")->index,backPointer,forwardPointer,LN);
 				}		
 				break;
 			}
@@ -399,7 +399,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer--;
-					return createToken(RNUM,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"RNUM")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -416,7 +416,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer-=2;
-					return createToken(RNUM,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"RNUM")->index,backPointer,forwardPointer,LN);
 				}
 				break;
 			}
@@ -429,7 +429,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer-=3;
-					return createToken(RNUM,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"RNUM")->index,backPointer,forwardPointer,LN);
 				}
 				break;			
 			}
@@ -443,7 +443,7 @@ Token* getNextToken()
 				else
 				{
 					forwardPointer--;
-					return createToken(RNUM,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"RNUM")->index,backPointer,forwardPointer,LN);
 				}			
 				break;
 			}
