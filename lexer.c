@@ -1,6 +1,7 @@
 #include "lexer.h"
 #include "hash_table.h"
 
+j_pointer=0;
 state=1;
 LN=1;
 backPointer=0;
@@ -18,9 +19,11 @@ FILE * getStream(FILE* fp)
 	for(;i<MAX_BUFF_SIZE;i++)
 	{
 		buffer[i]=getc(fp);
+		//printf("%d %c\n",i,buffer[i]);
 		if(buffer[i]==EOF)
 		{
 			buffer[i]='\0';
+			//printf("Reached End of the Program\n");
 			break;
 		}
 		//printf("%d  %c \n",i,buffer[i]);
@@ -43,7 +46,24 @@ Token* createToken(int index,int bp,int fp, int ln)
 	temp->val.i_val=0;
 
 	if(index==ht_search(mapping_table,"ID")->index)
-	{}
+	{
+		if(ht_search(keyword_table,temp->lexeme))
+		{	
+			j_pointer=0;
+			while(temp->lexeme[j_pointer])
+			{
+				token[j_pointer]=toupper(temp->lexeme[j_pointer++]);
+			}
+			token[j_pointer]=0;			
+
+			temp->index=ht_search(mapping_table,token)->index;	
+		}
+		else
+		{
+			if(strlen(temp->lexeme)>20)
+				temp->index=-1;
+		}
+	}
 
 	if(index==ht_search(mapping_table,"NUM")->index)
 	{	
@@ -71,7 +91,7 @@ Token* getNextToken()
 		//printf("forward pointer = %d\n",forwardPointer);
 		character_read=buffer[forwardPointer];
 
-		printf("State = %d  Character Read = %c\n",state,character_read);
+		//printf("State = %d  Character Read = %c\n",state,character_read);
 				
 		switch(state)
 		{
@@ -79,11 +99,11 @@ Token* getNextToken()
 			{
 				backPointer=forwardPointer;
 				
-				if(character_read=='\0')
+				if(character_read==0)
 				{
 					return NULL;
 				}
-				if(character_read=='(')
+				else if(character_read=='(')
 				{
 					return createToken(ht_search(mapping_table,"BO")->index,backPointer,forwardPointer,LN);
 				}
@@ -381,7 +401,7 @@ Token* getNextToken()
 				}		
 				else
 				{
-					forwardPointer--;
+					forwardPointer-=2;
 					return createToken(ht_search(mapping_table,"NUM")->index,backPointer,forwardPointer,LN);
 				}		
 				break;

@@ -1,6 +1,7 @@
 #include "lexer.h"
 #include "hash_table.h"
 #include <string.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -25,7 +26,7 @@ int main()
 	while (fgets(line, 40, keyword_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
 		ht_insert(keyword_table,line, i++,KEYWORD);
-        	printf("%s", line);
+        	//printf("%s", line);
     	}
 
 	fclose(keyword_file);
@@ -43,7 +44,7 @@ int main()
 	while (fgets(line, 40, terminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
 		ht_insert(mapping_table,line, i++,TERMINAL);
-        	printf("%s", line);
+        	//printf("%s", line);
     	}
 
 	fclose(terminal_file);
@@ -58,7 +59,7 @@ int main()
 	while (fgets(line, 40, nonterminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
 		ht_insert(mapping_table,line, i++,NONTERMINAL);
-        	printf("%s", line);
+        	//printf("%s", line);
     	}
 
 	fclose(nonterminal_file);
@@ -76,12 +77,18 @@ int main()
 	
 	forwardPointer=-1;
 
-	Token* next;
+	Token* next=NULL;
 
-	while(next=getNextToken())
-		printf("%s   %d  %d \n",next->lexeme,next->val,next->LN);
+	while(1)
+	{	
+		next=getNextToken();
+		if(!next)
+			break;
+		
+		printf("LEXEME=  %s  VALUE=  %d  LINE NUMBER=  %d  TYPE=  %d\n",next->lexeme,next->val,next->LN,next->index);
+	}
 
-	printf("Lexical Analysis Successful");
-	fclose(fp);
+	printf("Lexical Analysis Successful\n");
+	//fclose(fp);
 	exit(0);
 }

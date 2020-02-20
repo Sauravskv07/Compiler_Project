@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #define MAX_BUFF_SIZE 1000
 #define MAX_SIZE_MAPPING_TABLE 200
 
@@ -27,6 +29,8 @@ int backPointer;
 int state;
 char character_read;
 int LN;
+char token[20];
+int j_pointer;
 
 FILE * getStream(FILE* fp);
 Token* createToken(int type,int bp,int fp, int ln);
