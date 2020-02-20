@@ -1,0 +1,7 @@
+<program> -> <moduleDeclarations> <otherModules> <driverModule> <otherModules>
+<moduleDeclarations> -> <moduleDeclaration><moduleDeclarations> | e
+<moduleDeclaration> -> DECLARE MODULE ID SEMICOL
+<otherModules> -> <module> <otherModules> | e
+<driverModule> -> DRIVERDEF DRIVER PROGRAM DRIVERENDDEF <moduleDef>
+<module> -> DEF MODULE ID ENDDEF TAKES INPUT SQBO <input_plist> SQBC SEMICOL <ret> <moduleDef>
+<ret> -> RETURNS SQBO <output_plist> SQBC SEMICOL | e
