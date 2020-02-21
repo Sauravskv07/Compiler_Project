@@ -18,7 +18,7 @@ typedef struct {
 ht_hash_table* mapping_table;
 ht_hash_table* keyword_table;
 
-void ht_insert(ht_hash_table* ht, const char* key, int index, Type tag);
+ht_item* ht_insert(ht_hash_table* ht, const char* key, int index, Type tag);
 ht_item* ht_search(ht_hash_table* ht, const char* key);
 ht_hash_table* ht_new();
 

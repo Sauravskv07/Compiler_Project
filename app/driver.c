@@ -11,6 +11,8 @@ int main()
 	
 	keyword_table= ht_new();
 
+	ht_item *tokensList[MAX_SIZE_MAPPING_TABLE];
+
 	int i=0;
 	char line[40];
 	size_t len = 0;
@@ -44,8 +46,7 @@ int main()
 
 	while (fgets(line, 40, terminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
-		terms[i] = line;
-		ht_insert(mapping_table,line, i++,TERMINAL);
+		tokensList[i]=ht_insert(mapping_table,line, i++,TERMINAL);
         	//printf("%s", line);
     	}
 
@@ -60,8 +61,7 @@ int main()
 	}
 	while (fgets(line, 40, nonterminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
-		terms[i] = line;
-		ht_insert(mapping_table,line, i++,NONTERMINAL);
+		tokensList[i]=ht_insert(mapping_table,line, i++,NONTERMINAL);
         	//printf("%s", line);
     	}
 

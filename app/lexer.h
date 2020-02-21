@@ -32,7 +32,6 @@ int LN;
 char token[20];
 int j_pointer;
 
-char* terms[MAX_SIZE_MAPPING_TABLE];
 FILE * getStream(FILE* fp);
 Token* createToken(int type,int bp,int fp, int ln);
 Token* getNextToken();

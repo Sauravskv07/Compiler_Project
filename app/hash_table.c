@@ -29,7 +29,7 @@ static int ht_get_hash(const char* s, const int num_buckets, const int attempt)
     return (hash_a + (attempt * (hash_b + 1))) % num_buckets;
 }
 
-void ht_insert(ht_hash_table* ht, const char* key, int ind, Type tag) {
+ht_item* ht_insert(ht_hash_table* ht, const char* key, int ind, Type tag) {
     ht_item* item = ht_new_item(key, ind, tag);
     int index = ht_get_hash(item->key, ht->size, 0);
     ht_item* cur_item = ht->items[index];
@@ -41,6 +41,7 @@ void ht_insert(ht_hash_table* ht, const char* key, int ind, Type tag) {
     } 
     ht->items[index] = item;
     ht->count++;
+    return item;
 }
 
 
