@@ -50,13 +50,13 @@ ht_item* ht_search(ht_hash_table* ht, const char* key) {
     ht_item* item = ht->items[index];
     int i = 1;
     while (item != NULL) {
-        if (strcmp(item->key, key) == 0) {
+        if (strcmp(item->key,key) == 0) {
             return item;
         }
         index = ht_get_hash(key, ht->size, i);
         item = ht->items[index];
         i++;
-    } 
+    }
     return NULL;
 }
 

@@ -4,12 +4,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-int parse(char *fileName,ht_hash_table* mapping_table)
+int parse(char *fileName)
 {
 
-	int i=0;
+	int i=-1;
 	FILE* rules_file=fopen(fileName,"r");	
-	char *line;
+	char line[201];
 
     	if (rules_file == NULL)
 	{
@@ -17,35 +17,47 @@ int parse(char *fileName,ht_hash_table* mapping_table)
         	exit(EXIT_FAILURE);
 	}
 
-	while (fgets(line, 50, rules_file)!=NULL) {
-        	line[strcspn(line, "\n")] = 0;
+	while (fgets(line,200, rules_file)!=NULL) {        	
+		line[strcspn(line, "\n")] = 0;
+		//printf("%s\n", line);
 		i = addLine(line,i);
-		printf("%s", line);
     	}
 
 	fclose(rules_file);
 
 	printf("Rules parsing Successful\n");
+	
 	return 0;
 }
-int addLine(char *line, int index)
-{
-	char *ld = strtok (line," -");
-	rules[index].lhs = ht_search(mapping_table, ld);
+int addLine(char line[], int index)
+{	
+	char *ld;
+	ld = strtok (line," <>");
+
+	rules[++index].lhs = ht_search(mapping_table, ld);
+	rule_count++;
+
 	if(rules[index].lhs==NULL)
-	{return index++;}
-	index++;
+	{
+		return index;
+	}
+
 	rule_rhs* t=NULL;
 	rule_rhs* term;
 	ht_item* temp;
+	strtok (NULL," <>");
 	char *nd = strtok (NULL," <>");
+
+	//printf("%s -> \n",rules[index].lhs->key);
 	while(nd!=NULL)
 	{
+		//printf("%s\n",nd);
 		if(strlen(nd)==1&&nd[0]=='|')
 		{
-			rules[index].lhs = ht_search(mapping_table, ld);
+			//printf("REPEATED NONTERMINAL\n");
+			rules[++index].lhs = ht_search(mapping_table, ld);
+			rule_count++;
 			t=NULL;
-			index++;
 		}
 		else
 		{
@@ -56,19 +68,33 @@ int addLine(char *line, int index)
 			term->node = temp;
 			term->next = NULL;
 			if(t==NULL)
-			{rules[index].key = term;t=rules[index].key;}
+			{
+				rules[index].key = term;
+				t=rules[index].key;
+			}
 			else
-			{t->next = term;t=term;}
+			{
+				t->next = term;
+				t=term;			
+			}
 		}
-		char *nd = strtok (NULL," <>");
+		nd = strtok (NULL," <>");
 	}
 	
 	return index;
 }
 void printRules()
 {
-	for(int i=0;i<MAX_RULES;i++)
+	printf("LETS PRINT \n");
+	for(int i=0;i<rule_count;i++)
 	{
-		printf("%s",rules[i].lhs->key);
+		printf("%s -> ",rules[i].lhs->key);
+		rule_rhs *temp=rules[i].key;		
+		while(temp!=NULL)
+		{
+			printf("%s ",temp->node->key);
+			temp=temp->next;
+		}
+		printf("\n");
 	}
 }

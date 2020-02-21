@@ -1,5 +1,3 @@
-
-
 typedef struct ht_items_list{
     ht_item *node;
     struct ht_items_list *next;

@@ -2,6 +2,7 @@
 #include "hash_table.h"
 #include <string.h>
 #include <stdlib.h>
+#include "parseRules.h"
 
 int main()
 {
@@ -67,7 +68,7 @@ int main()
 
 	fclose(nonterminal_file);
 
-	
+/*	
 	fp=(FILE*)fopen("program.c","r");
 	
 	if(fp==NULL)
@@ -92,6 +93,14 @@ int main()
 	}
 
 	printf("Lexical Analysis Successful\n");
+	
 	//fclose(fp);
+
+*/
+
+	parse("rules.txt");
+	
+	printRules();
+
 	exit(0);
 }
