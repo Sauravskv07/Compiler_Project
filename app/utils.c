@@ -10,7 +10,6 @@ ht_items_list * bin_to_list(unsigned long n)
 {
 	ht_items_list * st = malloc(sizeof(ht_items_list));
 	st->next=NULL;
-	//st->node = tokensList[0];
 	ht_items_list *t=st;
 	ht_items_list *x=NULL;
 
