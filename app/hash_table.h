@@ -14,7 +14,7 @@ typedef struct {
     ht_item** items;
 } ht_hash_table;
 
-
+ht_item *tokensList[MAX_SIZE_MAPPING_TABLE];
 ht_hash_table* mapping_table;
 ht_hash_table* keyword_table;
 

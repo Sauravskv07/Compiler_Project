@@ -7,13 +7,12 @@
 
 int main()
 {
+
 	printf("Start..");
 
 	mapping_table= ht_new();
 	
 	keyword_table= ht_new();
-
-	ht_item *tokensList[MAX_SIZE_MAPPING_TABLE];
 
 	int i=0;
 	char line[40];
@@ -48,7 +47,9 @@ int main()
 
 	while (fgets(line, 40, terminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
-		tokensList[i]=ht_insert(mapping_table,line, i++,TERMINAL);
+		tokensList[i]=ht_insert(mapping_table,line, i,TERMINAL);		
+		i++;
+		
         	//printf("%s", line);
     	}
 
@@ -63,8 +64,9 @@ int main()
 	}
 	while (fgets(line, 40, nonterminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
-		tokensList[i]=ht_insert(mapping_table,line, i++,NONTERMINAL);
-        	//printf("%s", line);
+		tokensList[i]=ht_insert(mapping_table,line, i,NONTERMINAL);
+		i++;
+        	
     	}
 
 	fclose(nonterminal_file);
@@ -102,6 +104,7 @@ int main()
 	parse("rules.txt");
 	
 	printRules();
+
 
 	ht_items_list* temp=computeFirst(ht_search(mapping_table,"program"),tokensList);
 	
