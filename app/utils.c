@@ -35,22 +35,20 @@ int first(ht_item *term)
 	}
 	int items = 0;
 	int i=0;
-	while(i<MAX_RULES && term!=rules[i].lhs)
+	while(i<rule_count && term!=rules[i].lhs)
 	{i++;}
 	int temp;
-	while(i<MAX_RULES && term==rules[i].lhs)
+	while(i<rule_count && term==rules[i].lhs)
 	{
 		temp = first(rules[i].key->node);
 		int temp2=temp;
-		ht_item *lt=rules[i].key->next;
-		while((temp2/2)%2==1 && lt!=null)
+		rule_rhs *lt=rules[i].key->next;
+		while((temp2/2)%2==1 && lt!=NULL)
 		{
-			if(lt!=null)
-			{
-				temp2 = first(lt);
-				temp = unionLists(temp,temp2);
-				lt=lt->next;
-			}
+
+			temp2 = first(lt->node);
+			temp = unionLists(temp,temp2);
+			lt=lt->next;
 		}
 		if((temp2/2)%2!=1)
 		{temp = temp & (~2);}
@@ -74,7 +72,7 @@ int follow(ht_item *term)
 	int i=0;
 	rule_rhs *t=NULL;
 	int temp;
-	while(i<MAX_RULES && rules[i].lhs!=NULL)
+	while(i<rule_count && rules[i].lhs!=NULL)
 	{
 		t = rules[i].key;
 		while(t!=NULL)
@@ -88,18 +86,18 @@ int follow(ht_item *term)
 		{temp = first(t->next->node);}
 
 		int temp2=temp;
-		ht_item *lt=rules[i].key->next;
-		while(temp2%2==1 && lt!=null)
+		rule_rhs *lt=rules[i].key->next;
+		while(temp2%2==1 && lt!=NULL)
 		{
-			if(lt!=null)
+			if(lt!=NULL)
 			{
-				temp2 = first(lt);
+				temp2 = first(lt->node);
 				temp = unionLists(temp,temp2);
 				lt=lt->next;
 			}
 		}
 		if(temp2%2==1)
-		{temp = temp & (~1);}
+		{temp = temp | (1);}
 		temp = temp & (~2);
 
 		items = unionLists(items,temp);

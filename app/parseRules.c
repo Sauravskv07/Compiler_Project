@@ -9,7 +9,7 @@ int parse(char *fileName)
 
 	int i=-1;
 	FILE* rules_file=fopen(fileName,"r");	
-	char line[201];
+	char* line;
 
     	if (rules_file == NULL)
 	{

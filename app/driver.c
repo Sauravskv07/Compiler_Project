@@ -1,5 +1,6 @@
 #include "lexer.h"
 #include "hash_table.h"
+#include "utils.h"
 #include <string.h>
 #include <stdlib.h>
 #include "parseRules.h"
@@ -101,6 +102,10 @@ int main()
 	parse("rules.txt");
 	
 	printRules();
+
+	ht_items_list* temp=computeFirst(ht_search(mapping_table,"program"),tokensList);
+	
+	printmyList(temp);
 
 	exit(0);
 }

@@ -1,6 +1,5 @@
 # define MAX_RULES 100
 
-
 typedef struct rule_rhs{
     ht_item *node;
     struct rule_rhs *next;
