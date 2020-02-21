@@ -30,7 +30,9 @@ int unionLists(int items,int temp)
 int first(ht_item *term)
 {
 	if(term->tag==1)
-	{return pow(2, term->index);}
+	{
+		return pow(2, term->index);
+	}
 	int items = 0;
 	int i=0;
 	while(i<MAX_RULES && term!=rules[i].lhs)
@@ -39,6 +41,19 @@ int first(ht_item *term)
 	while(i<MAX_RULES && term==rules[i].lhs)
 	{
 		temp = first(rules[i].key->node);
+		int temp2=temp;
+		ht_item *lt=rules[i].key->next;
+		while((temp2/2)%2==1 && lt!=null)
+		{
+			if(lt!=null)
+			{
+				temp2 = first(lt);
+				temp = unionLists(temp,temp2);
+				lt=lt->next;
+			}
+		}
+		if((temp2/2)%2!=1)
+		{temp = temp & (~2);}
 		items = unionLists(items,temp);
 		i++;
 	}
@@ -71,6 +86,22 @@ int follow(ht_item *term)
 		{temp = follow(rules[i].lhs);}
 		if(t->node==term && t->next!=NULL)
 		{temp = first(t->next->node);}
+
+		int temp2=temp;
+		ht_item *lt=rules[i].key->next;
+		while(temp2%2==1 && lt!=null)
+		{
+			if(lt!=null)
+			{
+				temp2 = first(lt);
+				temp = unionLists(temp,temp2);
+				lt=lt->next;
+			}
+		}
+		if(temp2%2==1)
+		{temp = temp & (~1);}
+		temp = temp & (~2);
+
 		items = unionLists(items,temp);
 		i++;
 	}
