@@ -97,7 +97,7 @@ unsigned long follow(ht_item *term)
 			t = t->next;
 		}
 		if(t==NULL)
-		{continue;}
+		{i++;continue;}
 		if(t->node==term && t->next==NULL)
 		{temp = follow(rules[i].lhs);}
 		if(t->node==term && t->next!=NULL)
