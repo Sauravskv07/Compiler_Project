@@ -37,45 +37,74 @@ unsigned long first(ht_item *term)
 {
 	if(term->tag==1)
 	{
-		//printf("Terminal %s\n",term->key);
-		//printf("With index %d\n",term->index);
 		return pow(2, term->index);
 	}
 	unsigned long items = 0;
 	int i=0;
-	//printf("Term is a nonterminal %s\n",term->key);
 	while(i<rule_count && term!=rules[i].lhs)
 	{i++;}
 	unsigned long temp;
+	
 	while(i<rule_count && term==rules[i].lhs)
 	{	
 		temp = first(rules[i].key->node);
-		//printf("Value of temp= %lu\n",temp);
+
 		unsigned long temp2=temp;
+
 		rule_rhs *lt=rules[i].key->next;
+
 		while((temp2/2)%2==1 && lt!=NULL)
 		{
-			//printf("Checking Next Element\n");
 			temp2 = first(lt->node);
+			
 			temp = unionLists(temp,temp2);
+
 			lt=lt->next;
 		}
+
 		if((temp2/2)%2!=1)
 		{
-			//printf("Last Element is Not e\n");
 			temp = temp & (~2);
 		}
+
 		items = unionLists(items,temp);
+
 		i++;
-		//printf("Value of item returned = %lu\n",items);
+
 	}
-	//printf("Returned Term is a nonterminal %s\n",term->key);
+
 	return items;
 }
+
 ht_items_list * computeFirst(ht_item *term)
 {
 	ht_items_list * x = bin_to_list(first(term));
-	//printf("%s\n",x->next->node->key);
+
+	return x;
+}
+
+
+unsigned long firstofRule(rule_rhs* rhs)
+{
+	if(rhs==NULL)
+		return 2;
+
+	unsigned long items=first(rhs->node);
+	
+	if((items/2)%2==1)
+	{
+		items &= (~2);
+	
+		items=unionLists(items,firstofRule(rhs->next));					
+	}
+	
+	return items;
+}
+
+ht_items_list * computeFirstofRule(rule_rhs* rhs)
+{
+	ht_items_list * x = bin_to_list(firstofRule(rhs));
+
 	return x;
 }
 
@@ -139,11 +168,12 @@ ht_items_list * computeFollow(ht_item *term)
 void printmyList(ht_items_list * lt)
 {
 
-	printf("First = \n");
+	printf("First = ");
 	lt=lt->next;
 	while(lt!=NULL)
 	{
 		printf("%s\n",lt->node->key);
 		lt = lt->next;
 	}
+
 }

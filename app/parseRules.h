@@ -16,3 +16,4 @@ int rule_count;
 int parse(char *fileName);
 int addLine(char *line, int index);
 void printRules();
+void printRule(int i);

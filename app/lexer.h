@@ -31,6 +31,8 @@ char character_read;
 int LN;
 char token[20];
 int j_pointer;
+int num_terminals;
+int num_nonterminals;
 
 FILE * getStream(FILE* fp);
 Token* createToken(int type,int bp,int fp, int ln);

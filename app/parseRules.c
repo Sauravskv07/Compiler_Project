@@ -98,3 +98,16 @@ void printRules()
 		printf("\n");
 	}
 }
+
+void printRule(int i)
+{
+	printf("%s -> ",rules[i].lhs->key);
+	rule_rhs *temp=rules[i].key;		
+	while(temp!=NULL)
+	{
+		printf("%s ",temp->node->key);
+		temp=temp->next;
+	}
+	printf("\n");
+}
+	
