@@ -72,7 +72,7 @@ unsigned long first(ht_item *term)
 	//printf("Returned Term is a nonterminal %s\n",term->key);
 	return items;
 }
-ht_items_list * computeFirst(ht_item *term,ht_item* tokensList[])
+ht_items_list * computeFirst(ht_item *term)
 {
 	ht_items_list * x = bin_to_list(first(term));
 	//printf("%s\n",x->next->node->key);
@@ -97,7 +97,10 @@ unsigned long follow(ht_item *term)
 			t = t->next;
 		}
 		if(t==NULL)
-		{continue;}
+		{
+			i++;
+			continue;
+		}
 		if(t->node==term && t->next==NULL)
 		{temp = follow(rules[i].lhs);}
 		if(t->node==term && t->next!=NULL)
@@ -115,7 +118,9 @@ unsigned long follow(ht_item *term)
 			}
 		}
 		if(temp2%2==1)
-		{temp = temp | (1);}
+		{
+			temp = temp | (1);
+		}
 		temp = temp & (~2);
 
 		items = unionLists(items,temp);

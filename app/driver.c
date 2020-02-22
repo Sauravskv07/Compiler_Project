@@ -7,6 +7,9 @@
 
 int main()
 {
+	num_terminals=0;
+	num_nonterminals=0;
+
 
 	printf("Start..");
 
@@ -30,6 +33,7 @@ int main()
 	while (fgets(line, 40, keyword_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
 		ht_insert(keyword_table,line, i++,KEYWORD);
+		
         	//printf("%s", line);
     	}
 
@@ -47,7 +51,8 @@ int main()
 
 	while (fgets(line, 40, terminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
-		tokensList[i]=ht_insert(mapping_table,line, i,TERMINAL);		
+		tokensList[i]=ht_insert(mapping_table,line, i,TERMINAL);
+		num_terminals++;		
 		i++;
 		
         	//printf("%s", line);
@@ -65,6 +70,7 @@ int main()
 	while (fgets(line, 40, nonterminal_file)!=NULL) {
         	line[strcspn(line, "\n")] = 0;
 		tokensList[i]=ht_insert(mapping_table,line, i,NONTERMINAL);
+		num_nonterminals++;
 		i++;
         	
     	}
@@ -106,7 +112,7 @@ int main()
 	printRules();
 
 
-	ht_items_list* temp=computeFirst(ht_search(mapping_table,"program"),tokensList);
+	ht_items_list* temp=computeFirst(ht_search(mapping_table,"program"));
 	
 	printmyList(temp);
 
