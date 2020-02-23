@@ -23,6 +23,7 @@ int main()
 	size_t len = 0;
 	ssize_t read;
 
+/*
 	FILE* keyword_file=fopen("keywords.txt","r");	
 
     	if (keyword_file == NULL)
@@ -39,10 +40,10 @@ int main()
     	}
 
 	fclose(keyword_file);
-
+*/
 	i=0;
 
-	FILE* terminal_file=fopen("terminals.txt","r");
+	FILE* terminal_file=fopen("terminals_trial.txt","r");
 	
     	if (terminal_file == NULL)
 	{
@@ -61,7 +62,7 @@ int main()
 
 	fclose(terminal_file);
 
-	FILE* nonterminal_file=fopen("nonterminals.txt","r");
+	FILE* nonterminal_file=fopen("nonterminals_trial.txt","r");
 	
     	if (nonterminal_file == NULL)
 	{
@@ -110,7 +111,7 @@ int main()
 
 	printf("PARSED RULES\n");
 
-	parse("rules.txt");
+	parse("rule_trial.txt");
 	
 	printRules();
 

@@ -1,0 +1,5 @@
+<E>-> <T><ED>
+<ED>-> PLUS <T> <ED> | e
+<T>-> <F><TD>
+<TD>-> MUL <F> <TD> | e
+<F> -> ID | BO <E> BC
