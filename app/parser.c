@@ -80,9 +80,9 @@ struct error_list* parse(treenode* tn, stack* st){
 
 			int i=0;
 			
-			rule_rhs* rule=parse_table[top->data->index][nextToken->index];
+			int rule_index=parse_table[top->data->index][nextToken->index];
 
-			if(rule==NULL)
+			if(rule==-1)
 			{
 				error_list* new_error=(error_list*)malloc(sizeof(error_list));
 				new_error->tk=nextToken;
@@ -93,13 +93,15 @@ struct error_list* parse(treenode* tn, stack* st){
 
 				while(nextToken!=NULL)
 				{
-					rule=parse_table[top->data->index][nextToken->index];
-					if(rule!=NULL)
+					rule_index=parse_table[top->data->index][nextToken->index];
+					if(rule_index!=-1)
 					{
 						break;
 					}
 				}
 			}
+
+			rule_rhs* rule = rules[rule_index]->key;
 
 			while(rule)
 			{

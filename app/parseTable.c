@@ -9,6 +9,10 @@
 
 void create_parse_table()
 {
+	for(int i=0;i<MAX_SIZE_MAPPING_TABLE,i++)
+		for(int j=0;j<MAX_SIZE_MAPPING_TABLE;j++)
+			parse_table[i][j]=-1;
+
 	int index_e = ht_search(mapping_table,"e")->index;
 
 	for(int i=0;i<rule_count;i++)
@@ -25,7 +29,7 @@ void create_parse_table()
 			if(first->node->index==index_e)
 				contains_e=1;
 
-			parse_table[nonterminal->index][first->node->index]=rules[i].key;
+			parse_table[nonterminal->index][first->node->index]=i;
 			
 			first=first->next;
 
@@ -37,11 +41,23 @@ void create_parse_table()
 
 			while(follow!=NULL)
 			{
-				parse_table[nonterminal->index][follow->node->index]=rules[i].key;
+				parse_table[nonterminal->index][follow->node->index]=i;
 	
 				follow=follow->next;
 			}		
 		}
 	}
+}
 
+void print_parse_table()
+{	
+	for(int i=0;i<num_nonterminals;i++)
+	{
+		printf("\n%s ",tokensList[i+num_terminals]->key);
+		
+		for(int j=0;j<num_terminals;j++)
+		{
+			print
+		}
+	}
 }

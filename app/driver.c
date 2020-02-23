@@ -117,8 +117,14 @@ int main()
 	{	
 		printRule(i);
 		result=computeFirstofRule(rules[i].key);		
+		printf("\nFirst = ");
 		printmyList(result);
+		result=computeFollow(rules[i].key);		
+		printf("\nFollow = ");
+		printmyList(result);		
 	}
+
+	print_parse_table();
 
 	exit(0);
 }
