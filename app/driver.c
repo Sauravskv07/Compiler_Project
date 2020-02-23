@@ -12,7 +12,7 @@ int main()
 	num_nonterminals=0;
 
 
-	printf("Start..");
+	printf("Start..\n");
 
 	mapping_table= ht_new();
 	
@@ -108,11 +108,15 @@ int main()
 
 */
 
+	printf("PARSED RULES\n");
+
 	parse("rules.txt");
 	
 	printRules();
 
 	ht_items_list* result;
+
+	printf("FIRST AND FOLLOW SETS\n");
 
 	for(int i=0;i<rule_count;i++)
 	{	
@@ -126,7 +130,9 @@ int main()
 		printf("\n");		
 	}
 
-	print_parse_table();
+	printf("PRINTING THE PARSE TABLE\n");
+	create_parse_table();
+	//print_parse_table();
 
 	exit(0);
 }
