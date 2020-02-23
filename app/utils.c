@@ -78,7 +78,9 @@ unsigned long first(ht_item *term)
 
 ht_items_list * computeFirst(ht_item *term)
 {
-	ht_items_list * x = bin_to_list(first(term));
+	unsigned long t = first(term);
+	if(t==0){t=2;}
+	ht_items_list * x = bin_to_list(t);
 
 	return x;
 }
@@ -112,6 +114,8 @@ unsigned long follow(ht_item *term)
 {
 	if(term->tag==1)
 	{return pow(2, term->index);}
+	if(term==ht_search(mapping_table, "program"))
+	{return 1;}
 	unsigned long items = 0;
 	int i=0;
 	rule_rhs *t=NULL;
@@ -122,24 +126,14 @@ unsigned long follow(ht_item *term)
 		while(t!=NULL)
 		{
 			if(t->node==term)
-			{break;}
-			t = t->next;
-		}
-		if(t==NULL)
-		{
-			i++;
-			continue;
-		}
-
-
-		if(t->node==term && t->next==NULL)
+			{if(t->node==term && t->next==NULL && term!=rules[i].lhs)
 		{temp = follow(rules[i].lhs);}
 		if(t->node==term && t->next!=NULL)
 		{temp = first(t->next->node);}
 
 		unsigned long temp2=temp;
-		rule_rhs *lt=rules[i].key->next;
-		while(temp2%2==1 && lt!=NULL)
+		rule_rhs *lt=t->next;
+		while((temp2/2)%2==1 && lt!=NULL)
 		{
 			if(lt!=NULL)
 			{
@@ -148,29 +142,40 @@ unsigned long follow(ht_item *term)
 				lt=lt->next;
 			}
 		}
-		if(temp2%2==1)
+		if((temp2/2)%2==1)
 		{
-			temp = temp | (1);
+			temp = unionLists(temp,follow(rules[i].lhs));
 		}
 		temp = temp & (~2);
 
 		items = unionLists(items,temp);
-		i++;
+			}
+			t = t->next;
+		}
+		if(t==NULL)
+		{
+			i++;
+			continue;
+		}
 	}
 	return items;
 }
 ht_items_list * computeFollow(ht_item *term)
 {
-	ht_items_list * x = bin_to_list(follow(term));
+	unsigned long t = follow(term);
+	if(t==0){t=1;}
+	ht_items_list * x = bin_to_list(t);
 	return x;
 }
 
 void printmyList(ht_items_list * lt)
 {
+	printf("First = ");
 	lt=lt->next;
 	while(lt!=NULL)
 	{
-		printf("%s ,",lt->node->key);
+		printf("%s\n",lt->node->key);
+
 		lt = lt->next;
 	}
 
