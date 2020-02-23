@@ -131,6 +131,7 @@ int main()
 	}
 
 	printf("PRINTING THE PARSE TABLE\n");
+
 	create_parse_table();
 	
 	print_parse_table();

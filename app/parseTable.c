@@ -28,7 +28,9 @@ void create_parse_table()
 		while(first!=NULL)
 		{
 			if(first->node->index==index_e)
+			{
 				contains_e=1;
+			}
 
 			parse_table[nonterminal->index][first->node->index]=i;
 			
