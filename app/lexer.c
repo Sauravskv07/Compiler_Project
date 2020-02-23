@@ -72,7 +72,8 @@ Token* createToken(int index,int bp,int fp, int ln)
 
 	else if(index==ht_search(mapping_table,"RNUM")->index)
 	{}
-
+	
+	printf("LEXEME=  %s  VALUE=  %d  LINE NUMBER=  %d  TYPE=  %d\n",temp->lexeme,temp->val,temp->LN,temp->index);
 	return temp;
 }
 

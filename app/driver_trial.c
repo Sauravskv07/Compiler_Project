@@ -45,7 +45,7 @@ int main()
 */
 	i=0;
 
-	FILE* terminal_file=fopen("terminals_trial.txt","r");
+	FILE* terminal_file=fopen("terminals.txt","r");
 	
     	if (terminal_file == NULL)
 	{

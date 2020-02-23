@@ -15,11 +15,15 @@ error_list* parseTree(){
 
 	errors=NULL;
 
-	stack *st=NULL;
+	stack *st=(stack*)malloc(sizeof(stack));
 
 	ht_item* rhs_rev[MAX_RHS];
 
 	ht_item* bottom=NULL;
+
+	st->data=bottom;
+	st->next=NULL;
+	st->prev=NULL;
 
 	ht_item* start=ht_search(mapping_table,"program");
 
@@ -28,8 +32,6 @@ error_list* parseTree(){
 	end_marker->index=-1;
 
 	end_marker->key=NULL;
-
-	st=push(st,bottom);
 
 	st=push(st,start);
 
@@ -40,14 +42,13 @@ error_list* parseTree(){
 	node* temp=(node *)malloc(sizeof(node));
 	
 	treenode* currentNode = NULL;
-
-	top=peek(st);
 	
 	int isFirst=1;
 
-	printf("HOLA \n");
-	while(top!=NULL)
+	while(peek(st)!=NULL)
 	{
+		top=peek(st);
+		
 		if(nextToken==NULL)
 		{
 			printf("REACHED END OF PROGRAM WITHOUT COMPLETE PARSE TREE GENERATION\n");
@@ -66,7 +67,7 @@ error_list* parseTree(){
 
 		st=pop(st);
 
-		printf("HOLA1 \n");
+		printf("Popped Element = %s\n",top->key);
 
 		if(top->index==-1)
 		{
@@ -123,6 +124,7 @@ error_list* parseTree(){
 					continue;
 			}
 
+			printf("Rule used = %d \n",rule_index);
 			rule_rhs* rule = rules[rule_index].key;
 
 			while(rule)
