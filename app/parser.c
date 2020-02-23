@@ -28,7 +28,14 @@ struct error_list* parse(treenode* tn, stack* st){
 	{
 		if(nextToken==NULL)
 		{
-			//throw error
+			printf("REACHED END OF PROGRAM WITHOUT COMPLETE PARSE TREE GENERATION\n");
+
+			error_list* new_error=(error_list*)malloc(sizeof(error_list));
+			new_error->tk=nextToken;
+			new_error->next=errors;
+			errors=new_error;
+
+			return errors;
 		}
 		top=peek(st);
 
@@ -39,15 +46,6 @@ struct error_list* parse(treenode* tn, stack* st){
 			currentNode=currentNode->parent;
 		}	
 		
-		//TODO struct of node
-		if(top->status==1)
-		{
-			currentNode=insertAsChild(currentNode, node *child,top->data->tag );
-		}
-		else
-		{
-			currentNode=insertAsNextSibling(currentNode, node *right,top->data->tag);
-		}
 
 		if(top->data->index==ht_search(mapping_table,"e")->index)
 		{
@@ -56,6 +54,20 @@ struct error_list* parse(treenode* tn, stack* st){
 
 		else if(top->data->tag==2)
 		{
+
+			node* temp=(node*)malloc(sizeof(node))
+
+			temp->nonterm = top->data;
+
+			if(top->status==1)
+			{
+				currentNode=insertAsChild(currentNode, temp,top->data->tag );
+			}
+			else
+			{
+				currentNode=insertAsNextSibling(currentNode, temp,top->data->tag);
+			}
+
 			st=push(st,end_marker,0);
 
 			int i=0;
@@ -66,8 +78,8 @@ struct error_list* parse(treenode* tn, stack* st){
 			{
 				error_list* new_error=(error_list*)malloc(sizeof(error_list));
 				new_error->tk=nextToken;
-				new_error->next=NULL;
-				errors->next=new_error;
+				new_error->next=errors;
+				errors=new_error;
 				//more on error recovery
 			}
 			while(rule)
@@ -95,11 +107,41 @@ struct error_list* parse(treenode* tn, stack* st){
 			{
 				error_list* new_error=(error_list*)malloc(sizeof(error_list));
 				new_error->tk=nextToken;
-				new_error->next=NULL;
-				errors->next=new_error;
-				//more on error recovery
+				new_error->next=errors;
+				errors=new_error;
+
+				nextToken=getNextToken();
+
+				while(nextToken!=NULL)
+				{
+					if(top->data->index==nextToken->index)
+					{
+						break;
+					}
+				}
+			}
+
+			//TODO struct of Token node
+
+			if(top->status==1)
+			{
+				currentNode=insertAsChild(currentNode, node *child,top->data->tag );
+			}
+			else
+			{
+				currentNode=insertAsNextSibling(currentNode, node *right,top->data->tag);
 			}
 		}
 	}
+	
+	if(nextToken!=NULL)
+	{
+			printf("Extra Tokens Found \n");
+			error_list* new_error=(error_list*)malloc(sizeof(error_list));
+			new_error->tk=nextToken;
+			new_error->next=errors;
+			errors=new_error;
+	}
+	return errors;
 }
 
