@@ -51,13 +51,17 @@ void create_parse_table()
 
 void print_parse_table()
 {	
+	printf("    ");
+	for(int i=0;i<num_terminals;i++)
+		printf("%s ",tokensList[i]->key);
+
 	for(int i=0;i<num_nonterminals;i++)
 	{
 		printf("\n%s ",tokensList[i+num_terminals]->key);
 		
 		for(int j=0;j<num_terminals;j++)
 		{
-			print
+			printf("%d  ",parse_table[i+num_terminals][j]);
 		}
 	}
 }
