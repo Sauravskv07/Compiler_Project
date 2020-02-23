@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() 
+void removeComments() 
 {
     FILE *sc = fopen("src.c", "r");//char *src,char *dst
     FILE *cc = fopen("dst.c", "w");
@@ -36,5 +36,4 @@ int main()
 	}
   fclose(sc);
   fclose(cc);
-  return 0;
 }

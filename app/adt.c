@@ -8,7 +8,7 @@
 
 stack *pop(stack *st)
 {
-	if(st!=NULL)
+	if(st==NULL)
 	{return NULL;}
 	
 	stack *t = st;
@@ -30,7 +30,7 @@ stack *push(stack *st,ht_item *b)
 }
 ht_item *peek(stack *st)
 {
-	if(st!=NULL)
+	if(st==NULL)
 	{return NULL;}
 	return st->data;
 }
@@ -48,7 +48,7 @@ treenode *insertAsChild(treenode *parent, node *child, Type tag)
 	{root=t;}
 	return t;
 }
-treenode *insertAsNextSibling(treenode *child, node *right, Type tag)
+treenode *insertAsNextRightSibling(treenode *child, node *right, Type tag)
 {
 	if(child==NULL||right==NULL||child->right!=NULL)
 	{return NULL;}

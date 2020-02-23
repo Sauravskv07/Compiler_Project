@@ -1,9 +1,12 @@
-pars : hash_table.o parseRules.o \
+pars : adt.o lexer.o hash_table.o parseTable.o parseRules.o \
        remove.o utils.o
-	gcc -o pars driver.c hash_table.o parseRules.o remove.o utils.o -lm
+	gcc -o pars driver_trial.c adt.o lexer.o hash_table.o parseTable.o parseRules.o remove.o utils.o -lm
+	./pars
 
 adt.o : adt.c adt.h
 	gcc -c adt.c
+lexer.o : lexer.c lexer.h
+	gcc -c lexer.c
 hash_table.o : hash_table.c hash_table.h
 	gcc -c hash_table.c
 parser.o : parser.c parser.h
