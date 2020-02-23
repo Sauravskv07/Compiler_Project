@@ -2,6 +2,7 @@
 #include "hash_table.h"
 #include "parseRules.h"
 #include "utils.h"
+#include "parseTable.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -119,9 +120,10 @@ int main()
 		result=computeFirstofRule(rules[i].key);		
 		printf("\nFirst = ");
 		printmyList(result);
-		result=computeFollow(rules[i].key);		
+		result=computeFollow(rules[i].lhs);		
 		printf("\nFollow = ");
-		printmyList(result);		
+		printmyList(result);
+		printf("\n");		
 	}
 
 	print_parse_table();

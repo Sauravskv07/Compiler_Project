@@ -170,11 +170,10 @@ ht_items_list * computeFollow(ht_item *term)
 
 void printmyList(ht_items_list * lt)
 {
-	printf("First = ");
 	lt=lt->next;
 	while(lt!=NULL)
 	{
-		printf("%s\n",lt->node->key);
+		printf("%s  ",lt->node->key);
 
 		lt = lt->next;
 	}

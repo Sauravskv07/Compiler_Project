@@ -22,6 +22,7 @@ void create_parse_table()
 		ht_items_list * first=computeFirstofRule(rules[i].key)->next;
 
 		int contains_e=0;
+
 		int contains_dollar=0;
 
 		while(first!=NULL)
@@ -30,6 +31,7 @@ void create_parse_table()
 				contains_e=1;
 
 			parse_table[nonterminal->index][first->node->index]=i;
+			printf("%d\n",i);
 			
 			first=first->next;
 

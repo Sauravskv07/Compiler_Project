@@ -1,4 +1,10 @@
+#include "lexer.h"
+#include "hash_table.h"
+#include "parseRules.h"
+#include "utils.h"
 #include "adt.h"
+#include <string.h>
+#include <stdlib.h>
 
 stack *pop(stack *st)
 {
