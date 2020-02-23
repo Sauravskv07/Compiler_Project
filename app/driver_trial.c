@@ -3,6 +3,8 @@
 #include "parseRules.h"
 #include "utils.h"
 #include "parseTable.h"
+#include "adt.h"
+#include "parser.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -79,8 +81,8 @@ int main()
 
 	fclose(nonterminal_file);
 
-/*	
-	fp=(FILE*)fopen("program.c","r");
+	
+	fp=(FILE*)fopen("program_trial.c","r");
 	
 	if(fp==NULL)
 	{
@@ -93,7 +95,7 @@ int main()
 	forwardPointer=-1;
 
 	Token* next=NULL;
-
+/*
 	while(1)
 	{	
 		next=getNextToken();
@@ -135,6 +137,8 @@ int main()
 	create_parse_table();
 	
 	print_parse_table();
+
+	parseTree();
 
 	exit(0);
 }

@@ -1,12 +1,11 @@
 #define MAX_RHS 10
 
-treenode *parse_tree;
-stack *st;
-
-struct error_list{
+typedef struct error_list{
 	struct error_list* next;
 	Token* tk;
-}errors;
+}error_list;
 
-struct error_list* parse(treenode* tn, stack *st);
+error_list* errors;
+
+error_list* parseTree();
 

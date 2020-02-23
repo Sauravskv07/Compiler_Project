@@ -2,19 +2,24 @@
 #include "hash_table.h"
 #include "parseRules.h"
 #include "utils.h"
+#include "parseTable.h"
 #include "adt.h"
 #include "parser.h"
 #include <string.h>
 #include <stdlib.h>
 
-parse_tree=NULL;
-parse_stack=NULL;
 
-struct error_list* parse(treenode* tn, stack* st){
+error_list* parseTree(){
 
-	ht_item** rhs_rev=(ht_item *)malloc(sizeof(ht_item)*MAX_RHS);
+	root=NULL;
 
-	ht_item* bottom=ht_search(mapping_table,"$");
+	errors=NULL;
+
+	stack *st=NULL;
+
+	ht_item* rhs_rev[MAX_RHS];
+
+	ht_item* bottom=NULL;
 
 	ht_item* start=ht_search(mapping_table,"program");
 
@@ -24,74 +29,79 @@ struct error_list* parse(treenode* tn, stack* st){
 
 	end_marker->key=NULL;
 
-	st=push(st,bottom,0);
+	st=push(st,bottom);
 
-	st=push(st,start,1);
+	st=push(st,start);
 
-	stack *top;
+	ht_item *top;
 
 	Token* nextToken=getNextToken();
 
-	parse_tree=(treenode*)malloc(sizeof(treenode));
+	node* temp=(node *)malloc(sizeof(node));
 	
-	parse_tree->data=ht_search(mapping_table,"program");
-	parse_tree->child=NULL;
-	parse_tree->right=NULL
-	parse_tree->parent=NULL;
+	treenode* currentNode = NULL;
 
-	treenode* currentNode=parse_tree;
+	top=peek(st);
 	
-	while((peek(st)->data->index)!=bottom->index)
+	int isFirst=1;
+
+	printf("HOLA \n");
+	while(top!=NULL)
 	{
 		if(nextToken==NULL)
 		{
 			printf("REACHED END OF PROGRAM WITHOUT COMPLETE PARSE TREE GENERATION\n");
 
 			error_list* new_error=(error_list*)malloc(sizeof(error_list));
+			
 			new_error->tk=nextToken;
+
 			new_error->next=errors;
+	
 			errors=new_error;
 
 			return errors;
+
 		}
-		top=peek(st);
 
 		st=pop(st);
 
-		if(top->data->index==-1)
+		printf("HOLA1 \n");
+
+		if(top->index==-1)
 		{
 			currentNode=currentNode->parent;
 		}	
 		
 
-		if(top->data->index==ht_search(mapping_table,"e")->index)
+		if(top->index==ht_search(mapping_table,"e")->index)
 		{
 			continue;
 		}
 
-		else if(top->data->tag==2)
+		printf("HOLA2 \n");
+	
+		if(top->tag==2)
 		{
+			temp->nonterm = top;
 
-			node* temp=(node*)malloc(sizeof(node))
-
-			temp->nonterm = top->data;
-
-			if(top->status==1)
+			if(isFirst)
 			{
-				currentNode=insertAsChild(currentNode, temp,top->data->tag );
+				currentNode=insertAsChild(currentNode, temp,top->tag );
+				isFirst=0;
 			}
 			else
 			{
-				currentNode=insertAsNextSibling(currentNode, temp,top->data->tag);
+				currentNode=insertAsNextRightSibling(currentNode, temp,top->tag);
 			}
 
-			st=push(st,end_marker,0);
+			st=push(st,end_marker);
 
 			int i=0;
 			
-			int rule_index=parse_table[top->data->index][nextToken->index];
+			int rule_index=parse_table[top->index][nextToken->index];
 
-			if(rule==-1)
+			if(rule_index==-1)
 			{
 				error_list* new_error=(error_list*)malloc(sizeof(error_list));
 				new_error->tk=nextToken;
@@ -102,15 +112,18 @@ struct error_list* parse(treenode* tn, stack* st){
 
 				while(nextToken!=NULL)
 				{
-					rule_index=parse_table[top->data->index][nextToken->index];
+					rule_index=parse_table[top->index][nextToken->index];
 					if(rule_index!=-1)
 					{
 						break;
 					}
 				}
+				
+				if(rule_index==-1)
+					continue;
 			}
 
-			rule_rhs* rule = rules[rule_index]->key;
+			rule_rhs* rule = rules[rule_index].key;
 
 			while(rule)
 			{
@@ -123,13 +136,15 @@ struct error_list* parse(treenode* tn, stack* st){
 			{
 				st=push(st,rhs_rev[j]);
 			}
-			st=push(st,rhs_rev[0],1);
+			st=push(st,rhs_rev[0]);
+
+			isFirst=1;
 
 		}
 	
-		else if(top->data->tag==1)
+		else if(top->tag==1)
 		{
-			if(top->data->index==nextToken->index)
+			if(top->index==nextToken->index)
 			{
 				nextToken=getNextToken();
 			}
@@ -144,24 +159,26 @@ struct error_list* parse(treenode* tn, stack* st){
 
 				while(nextToken!=NULL)
 				{
-					if(top->data->index==nextToken->index)
+					if(top->index==nextToken->index)
 					{
 						break;
 					}
 				}
+			
+				if(nextToken==NULL)
+					continue;
 			}
-
-			node* temp=(node*)malloc(sizeof(node));
 			
 			temp->token=nextToken;
 
-			if(top->status==1)
+			if(isFirst==1)
 			{
 				currentNode=insertAsChild(currentNode, temp, 1);
+				isFirst=0;
 			}
 			else
 			{
-				currentNode=insertAsNextSibling(currentNode, temp, 1);
+				currentNode=insertAsNextRightSibling(currentNode, temp, 1);
 			}
 		}
 	}

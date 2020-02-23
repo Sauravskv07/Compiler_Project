@@ -20,13 +20,13 @@ typedef struct stack
 	struct stack *prev;
 }stack;
 
-stack *pop(stack *st);
-stack *push(stack *st,ht_item *b);
-ht_item *peek(stack *st);
+stack* pop(stack *st);
+stack* push(stack *st,ht_item *b);
+ht_item* peek(stack *st);
 
-treenode *root = NULL;
+treenode* root;
 
-treenode *insertAsChild(treenode *parent, node *child, Type tag);
-treenode *insertAsNextSibling(treenode *child, node *right, Type tag);
-treenode *getRoot(treenode *child);
+treenode* insertAsChild(treenode *parent, node *child, Type tag);
+treenode* insertAsNextRightSibling(treenode *child, node *right, Type tag);
+treenode* getRoot(treenode *child);
 void printTraversal(treenode *root);
