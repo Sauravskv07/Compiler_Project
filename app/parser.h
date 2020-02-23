@@ -1,7 +1,7 @@
 #define MAX_RHS 10
 
 treenode *parse_tree;
-stack *parse_stack;
+stack *st;
 
 struct error_list{
 	struct error_list* next;

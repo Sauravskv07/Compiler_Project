@@ -22,7 +22,15 @@ struct error_list* parse(treenode* tn, stack* st){
 	Token* nextToken=getNextToken();
 
 	//k is the node with start symbol TODO
-	treenode* currentNode=k;
+
+	parse_tree=(treenode*)malloc(sizeof(treenode));
+	
+	parse_tree->data=ht_search(mapping_table,"program");
+	parse_tree->child=NULL;
+	parse_tree->right=NULL
+	parse_tree->parent=NULL;
+
+	treenode* currentNode=parse_tree;
 	
 	while((peek(st)->data->index)!=bottom->index)
 	{
@@ -121,15 +129,17 @@ struct error_list* parse(treenode* tn, stack* st){
 				}
 			}
 
-			//TODO struct of Token node
+			node* temp=(node*)malloc(sizeof(node));
+			
+			temp->token=nextToken;
 
 			if(top->status==1)
 			{
-				currentNode=insertAsChild(currentNode, node *child,top->data->tag );
+				currentNode=insertAsChild(currentNode, temp, 1);
 			}
 			else
 			{
-				currentNode=insertAsNextSibling(currentNode, node *right,top->data->tag);
+				currentNode=insertAsNextSibling(currentNode, temp, 1);
 			}
 		}
 	}
