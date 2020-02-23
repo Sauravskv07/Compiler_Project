@@ -9,7 +9,7 @@
 
 void create_parse_table()
 {
-	for(int i=0;i<MAX_SIZE_MAPPING_TABLE,i++)
+	for(int i=0;i<MAX_SIZE_MAPPING_TABLE;i++)
 		for(int j=0;j<MAX_SIZE_MAPPING_TABLE;j++)
 			parse_table[i][j]=-1;
 
