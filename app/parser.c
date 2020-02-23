@@ -10,7 +10,9 @@ struct error_list* parse(treenode* tn, stack* st){
 	ht_item* start=ht_search(mapping_table,"program");
 
 	ht_item* end_marker=(ht_item *)malloc(sizeof(ht_item));
+
 	end_marker->index=-1;
+
 	end_marker->key=NULL;
 
 	st=push(st,bottom,0);
@@ -20,8 +22,6 @@ struct error_list* parse(treenode* tn, stack* st){
 	stack *top;
 
 	Token* nextToken=getNextToken();
-
-	//k is the node with start symbol TODO
 
 	parse_tree=(treenode*)malloc(sizeof(treenode));
 	
@@ -80,7 +80,7 @@ struct error_list* parse(treenode* tn, stack* st){
 
 			int i=0;
 			
-			rule_rhs* rule=parse_table[top->index][nextToken->index];
+			rule_rhs* rule=parse_table[top->data->index][nextToken->index];
 
 			if(rule==NULL)
 			{
@@ -88,8 +88,19 @@ struct error_list* parse(treenode* tn, stack* st){
 				new_error->tk=nextToken;
 				new_error->next=errors;
 				errors=new_error;
-				//more on error recovery
+
+				nextToken=getNextToken();
+
+				while(nextToken!=NULL)
+				{
+					rule=parse_table[top->data->index][nextToken->index];
+					if(rule!=NULL)
+					{
+						break;
+					}
+				}
 			}
+
 			while(rule)
 			{
 				rhs_rev[i]=rule->node;
