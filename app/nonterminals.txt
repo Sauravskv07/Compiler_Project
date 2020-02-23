@@ -52,6 +52,6 @@ conditionalStmt
 caseStmts
 N9
 value
-Default
+default
 iterativeStmt
 range
