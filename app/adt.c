@@ -8,7 +8,7 @@
 
 stack *pop(stack *st)
 {
-	if(st->NULL)
+	if(st!=NULL)
 	{return NULL;}
 	
 	stack *t = st;
@@ -19,21 +19,20 @@ stack *pop(stack *st)
 
 	return st;
 }
-stack *push(stack *st,ht_item *b,int status)
+stack *push(stack *st,ht_item *b)
 {
 	stack *d = malloc(sizeof(stack));
 	d->data = b;
 	d->prev = st;
-	d->status = status;
 	st->next = d;
 	st = st->next;
 	return st;
 }
-stack *peek(stack *st)
+ht_item *peek(stack *st)
 {
-	if(st->NULL)
+	if(st!=NULL)
 	{return NULL;}
-	return st;
+	return st->data;
 }
 
 treenode *insertAsChild(treenode *parent, node *child, Type tag)
@@ -60,7 +59,7 @@ treenode *insertAsNextSibling(treenode *child, node *right, Type tag)
 	t->parent = child->parent;
 	child->right = t;
 	return t;
-	
+	 
 }
 treenode *getRoot(treenode *child)
 {
@@ -73,7 +72,7 @@ treenode *getRoot(treenode *child)
 	}
 	return t;
 }
-void *printTraversal(treenode *root)
+void printTraversal(treenode *root)
 {
 	treenode *t = root;
 	if(t!=NULL)
@@ -81,12 +80,13 @@ void *printTraversal(treenode *root)
 		if(t->child==NULL)
 		{
 			if(t->tag!=NONTERMINAL)
-			print("%s",t->token->lexeme);
+			printf("%s",t->data->token->lexeme);
 		}
 		else
 		{
 			printTraversal(t->child);
+			printf("%s",t->data->nonterm->key);
+			printTraversal(t->child->right);
 		}
-		printTraversal(t->right);
 	}
 }
