@@ -1,8 +1,7 @@
-
 typedef union node
 {
 	Token *token;
-	NonTerm *nonterm;
+	ht_item *nonterm;
 }node;
 
 typedef struct treenode
@@ -14,25 +13,18 @@ typedef struct treenode
 	Type tag;
 }treenode;
 
-typedef struct block
-{
-	node *data;
-	Type tag;
-}block;
-
 typedef struct stack
 {
-	block* data;
-	block * next;
-	block *prev;
+	int status;
+	ht_item* data;
+	ht_item * next;
+	ht_item *prev;
 }stack;
 
-stack *st = NULL;
-block *pop(stack *st);
-block *push(stack *st,block *b);
-block *peek(stack *st);
+stack *pop(stack *st);
+stack *push(stack *st,ht_item *b,int status);
+stack *peek(stack *st);
 
-treenode *root = NULL;
 treenode *insertAsChild(treenode *parent, node *child, Type tag);
 treenode *insertAsNextSibling(treenode *child, node *right, Type tag);
 treenode *getRoot(treenode *child);

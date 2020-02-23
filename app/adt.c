@@ -1,31 +1,33 @@
 #include "adt.h"
 
-block *pop(stack *st)
+stack *pop(stack *st)
 {
 	if(st->NULL)
 	{return NULL;}
-	block *d = malloc(sizeof(block));
-	d->tag = st->data->tag;
-	d->data = st->data->data;
+	
 	stack *t = st;
 	st = st->prev;
+	st->next = NULL;
+
 	free(t);
-	return d;
+
+	return st;
 }
-block *push(stack *st,block *b)
+stack *push(stack *st,ht_item *b,int status)
 {
 	stack *d = malloc(sizeof(stack));
 	d->data = b;
 	d->prev = st;
+	d->status = status;
 	st->next = d;
 	st = st->next;
-	return b;
+	return st;
 }
-block *peek(stack *st)
+stack *peek(stack *st)
 {
 	if(st->NULL)
 	{return NULL;}
-	return st->data;
+	return st;
 }
 
 treenode *insertAsChild(treenode *parent, node *child, Type tag)
