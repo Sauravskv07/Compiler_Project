@@ -21,6 +21,7 @@ stack *pop(stack *st)
 	
 	stack *t = st;
 	st = st->prev;
+	if(st!=NULL)
 	st->next = NULL;
 
 	free(t);
@@ -54,6 +55,8 @@ treenode *insertAsChild(treenode *parent, node *child, Type tag)
 	t->parent = parent;
 	if(parent==NULL)
 	{root=t;}
+	else
+	parent->child = t;
 	return t;
 }
 treenode *insertAsNextRightSibling(treenode *child, node *right, Type tag)

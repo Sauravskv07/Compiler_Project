@@ -151,9 +151,9 @@ int main()
 	
 	printf("here\n");
 	
-	print_parse_table();
+	//print_parse_table();
 
-	parseTree();
+	//parseTree();
 
 	exit(0);
 }

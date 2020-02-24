@@ -110,7 +110,7 @@ Token* getNextToken()
 				
 				if(character_read==0)
 				{
-					return createToken(ht_search(mapping_table,"$")->index,0,0,LN);
+					return NULL;//createToken(ht_search(mapping_table,"$")->index,0,0,LN);
 				}
 				else if(character_read=='(')
 				{

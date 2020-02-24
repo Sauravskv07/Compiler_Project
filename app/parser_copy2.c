@@ -45,7 +45,7 @@ error_list* parseTree(){
 
 	ht_item *top;
 
-	Token* nextToken;
+	Token* nextToken=NULL;
 
 	node* temp=(node *)malloc(sizeof(node));
 	temp->nonterm = start;
@@ -54,12 +54,28 @@ error_list* parseTree(){
 	treenode* tempNode = NULL;
 	root = insertAsChild(NULL,temp,2);
 	
+	nextToken=getNextToken();
+	//while(nextToken!=NULL)
+	//{printf("Extra Tokens Found %d \n",nextToken->index);nextToken=getNextToken();}
 
 	while(peek(st)!=NULL && peek(st)!=bottom)
 	{
-		printf("%s",peek(st)->key);
+		printf("ugiubkjnkj %s\n",peek(st)->key);
 		top=peek(st);
-		if(top==end_marker){st=pop(st);currentNode=currentNode->parent;continue;}
+		if(top==end_marker){
+			while(peek(st)==end_marker)
+			{
+				printf("kihdkashdnkhnk %s\n",peek(st)->key);
+				st=pop(st);
+				tempNode = currentNode;
+				if(currentNode!=NULL)
+				currentNode=currentNode->parent;
+				else printf("aaaaa\n");
+			}
+			if(tempNode->right!=NULL)
+			currentNode = tempNode->right;
+			printf("ugiubkjnkj2 %s\n",peek(st)->key);
+			continue;}
 		printf("Popped Element = %s\n",top->key);	
 		if(top->index==ht_search(mapping_table,"e")->index)
 		{
@@ -69,17 +85,19 @@ error_list* parseTree(){
 		
 		while(1)
 		{
-			nextToken=getNextToken();
 			if(nextToken==NULL){break;}
 			if(top->tag==1 && top->index == nextToken->index)
 			{
+				printf("jhsvdbdjasbdjkb %d \n",nextToken->index);
 				st=pop(st);
 				currentNode->data->token = nextToken;
 				currentNode->tag = 1;
-				currentNode = currentNode->right;
+				if(currentNode->right!=NULL)currentNode = currentNode->right;
+				else st=pop(st);
+				nextToken=getNextToken();
 				break;
 			}
-			if(top->tag==2 && parse_table[top->index][nextToken->index]!=-1)
+			else if(top->tag==2 && parse_table[top->index][nextToken->index]!=-1)
 			{
 				st=pop(st);
 				rule_rhs* rule = rules[parse_table[top->index][nextToken->index]].key;
@@ -101,15 +119,22 @@ error_list* parseTree(){
 					}
 			
 					printf("Number of rules of RHS = %d\n",i);
+					st=push(st,end_marker);
 					for(int j=i-1;j>=0;j--)
 					{
 						st=push(st,rhs_rev[j]);
 					}
-					st=push(st,end_marker);
 					break;
 			}
+			else if(top->tag==2 && parse_table[top->index][ht_search(mapping_table,"e")->index]!=-1)
+			{
+				st=pop(st);
+				break;
+			}
+			else
+			{nextToken=getNextToken();}
 		}
-		if(nextToken==NULL && peek(st)!=bottom)
+		if((nextToken==NULL||nextToken->index==0) && peek(st)!=bottom)
 		{
 			printf("REACHED END OF PROGRAM WITHOUT COMPLETE PARSE TREE GENERATION\n");
 			printf("%s",peek(st)->key);
@@ -120,10 +145,11 @@ error_list* parseTree(){
 			return errors;
 		}
 	}
+
 	
-	if(nextToken!=NULL)
+	if(nextToken->index!=0)
 	{
-			printf("Extra Tokens Found \n");
+			printf("Extra Tokens Found %d \n",nextToken->index);
 			error_list* new_error=(error_list*)malloc(sizeof(error_list));
 			new_error->tk=nextToken;
 			new_error->next=errors;
