@@ -9,7 +9,7 @@
 <N1> -> COMMA ID COLON <dataType> <N1> | e
 <output_plist> -> ID COLON <type> <N2> 
 <N2> -> COMMA ID COLON <type> <N2> | e
-<dataType> -> ARRAY SQBO <range_arrays> SQBC OF <type>
+<dataType> -> INTEGER | BOOLEAN | REAL | ARRAY SQBO <range_arrays> SQBC OF <type>
 <range_arrays> -> <index> RANGEOP <index>
 <type> -> INTEGER | REAL | BOOLEAN
 <moduleDef> -> START <statements> END

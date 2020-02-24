@@ -73,21 +73,21 @@ error_list* parseTree(){
 
 	while(peek(st)!=NULL && peek(st)!=bottom)
 	{
-		printf("ugiubkjnkj %s\n",peek(st)->key);
+		//printf("ugiubkjnkj %s\n",peek(st)->key);
 		top=peek(st);
 		if(top==end_marker){
 			while(peek(st)==end_marker)
 			{
-				printf("kihdkashdnkhnk %s\n",peek(st)->key);
+				//printf("kihdkashdnkhnk %s\n",peek(st)->key);
 				st=pop(st);
 				tempNode = currentNode;
 				if(currentNode!=NULL)
 				currentNode=currentNode->parent;
-				else printf("aaaaa\n");
+				//else printf("aaaaa\n");
 			}
 			if(tempNode->right!=NULL)
 			currentNode = tempNode->right;
-			printf("ugiubkjnkj2 %s\n",peek(st)->key);
+			//printf("ugiubkjnkj2 %s\n",peek(st)->key);
 			continue;}
 		printf("Popped Element = %s\n",top->key);	
 		if(top->index==ht_search(mapping_table,"e")->index)
@@ -101,12 +101,12 @@ error_list* parseTree(){
 			if(nextToken==NULL){break;}
 			if(top->tag==1 && top->index == nextToken->index)
 			{
-				printf("jhsvdbdjasbdjkb %d \n",nextToken->index);
+				//printf("jhsvdbdjasbdjkb %d \n",nextToken->index);
 				st=pop(st);
 				currentNode->data->token = nextToken;
 				currentNode->tag = 1;
 				if(currentNode->right!=NULL)currentNode = currentNode->right;
-				else st=pop(st);
+				//else st=pop(st);
 				nextToken=getNextToken();
 				validateLexError(nextToken);
 				break;
@@ -132,7 +132,7 @@ error_list* parseTree(){
 						rule=rule->next;
 					}
 			
-					printf("Number of rules of RHS = %d\n",i);
+					//printf("Number of rules of RHS = %d\n",i);
 					st=push(st,end_marker);
 					for(int j=i-1;j>=0;j--)
 					{
@@ -176,6 +176,10 @@ error_list* parseTree(){
 			new_error->tk=nextToken;
 			new_error->next=errors;
 			errors=new_error;
+	}
+	else
+	{
+		printf("Parsing complete...");
 	}
 	return errors;
 }

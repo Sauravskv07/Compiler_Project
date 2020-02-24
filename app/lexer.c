@@ -8,6 +8,7 @@ GROUP NO. = 46
 */
 #include "lexer.h"
 #include "hash_table.h"
+#include <stdlib.h>
 
 int endReached=0;
 int j_pointer=0;
@@ -76,11 +77,13 @@ Token* createToken(int index,int bp,int fp, int ln)
 
 	if(index==ht_search(mapping_table,"NUM")->index)
 	{	
-	
+		temp->val.i_val = atoi(temp->lexeme);
 	}
 
 	else if(index==ht_search(mapping_table,"RNUM")->index)
-	{}
+	{
+		temp->val.f_val = atof(temp->lexeme);
+	}
 	
 	printf("LEXEME=  %s  VALUE=  %d  LINE NUMBER=  %d  TYPE=  %d\n",temp->lexeme,temp->val,temp->LN,temp->index);
 	return temp;
@@ -264,7 +267,7 @@ Token* getNextToken()
 
 				if(character_read=='>')
 				{
-					return createToken(ht_search(mapping_table,"ENDDRIVERDEF")->index,backPointer,forwardPointer,LN);
+					return createToken(ht_search(mapping_table,"DRIVERENDDEF")->index,backPointer,forwardPointer,LN);
 				}
 				else
 				{

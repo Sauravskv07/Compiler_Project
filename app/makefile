@@ -1,6 +1,6 @@
 pars : adt.o lexer.o hash_table.o parseTable.o parseRules.o parser_copy2.o \
        remove.o utils.o
-	gcc -o pars driver_trial.c adt.o lexer.o hash_table.o parseTable.o parseRules.o parser_copy2.o remove.o utils.o -lm
+	gcc -o pars driver.c adt.o lexer.o hash_table.o parseTable.o parseRules.o parser_copy2.o remove.o utils.o -lm -fno-stack-protector
 	./pars
 
 adt.o : adt.c adt.h
@@ -10,7 +10,7 @@ lexer.o : lexer.c lexer.h
 hash_table.o : hash_table.c hash_table.h
 	gcc -c hash_table.c
 parser_copy2.o : parser_copy2.c parser.h
-	gcc -c parser_copy2.c
+	gcc -c parser_copy2.c -fno-stack-protector
 parseTable.o : parseTable.c parseTable.h
 	gcc -c parseTable.c
 parseRules.o : parseRules.c parseRules.h

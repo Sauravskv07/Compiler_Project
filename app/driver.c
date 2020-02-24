@@ -90,20 +90,6 @@ int main()
 
 	fclose(nonterminal_file);
 
-	
-	fp=(FILE*)fopen("program.c","r");
-	
-	if(fp==NULL)
-	{
-		printf("Some error while opening the file");
-		exit(1);
-	}
-
-	fp=getStream(fp);
-	
-	forwardPointer=-1;
-
-	Token* next=NULL;
 /*
 	while(1)
 	{	
@@ -130,9 +116,9 @@ int main()
 
 	ht_items_list* result;
 
-	printf("FIRST AND FOLLOW SETS\n");
+	//printf("FIRST AND FOLLOW SETS\n");
 
-	for(int i=0;i<rule_count;i++)
+	/*for(int i=0;i<rule_count;i++)
 	{	
 		printRule(i);
 		result=computeFirstofRule(rules[i].key);		
@@ -143,17 +129,32 @@ int main()
 		printf("Follow = ");
 		printmyList(result);
 		printf("\n");		
+	}*/
+
+	//printf("PRINTING THE PARSE TABLE\n");
+
+
+	fp=(FILE*)fopen("t6.txt","r");
+	
+	if(fp==NULL)
+	{
+		printf("Some error while opening the file");
+		exit(1);
 	}
 
-	printf("PRINTING THE PARSE TABLE\n");
+	fp=getStream(fp);
+	
+	forwardPointer=-1;
+
+	Token* next=NULL;
 	
 	create_parse_table();
 	
-	printf("here\n");
+	//printf("here\n");
 	
 	//print_parse_table();
 
-	//parseTree();
+	parseTree();
 
 	exit(0);
 }
