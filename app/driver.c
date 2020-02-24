@@ -1,8 +1,18 @@
+/*
+GROUP NO. = 46
+2017A7PS0006P PIKLU PAUL
+2017A7PS0007P RAJABABU SAIKIA
+2017A7PS0090P SAURAV VIRMANI
+2017A7PS0111P SIDDHANT KHARBANDA
+2017A7PS0275P SREYAS RAVICHANDRAN
+*/
 #include "lexer.h"
 #include "hash_table.h"
 #include "parseRules.h"
 #include "utils.h"
 #include "parseTable.h"
+#include "adt.h"
+#include "parser.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -22,6 +32,7 @@ int main()
 	char line[40];
 	size_t len = 0;
 	ssize_t read;
+
 
 	FILE* keyword_file=fopen("keywords.txt","r");	
 
@@ -61,6 +72,7 @@ int main()
 
 	fclose(terminal_file);
 
+	printf("Number of terminals = %d\n",num_terminals);
 	FILE* nonterminal_file=fopen("nonterminals.txt","r");
 	
     	if (nonterminal_file == NULL)
@@ -78,7 +90,7 @@ int main()
 
 	fclose(nonterminal_file);
 
-/*	
+	
 	fp=(FILE*)fopen("program.c","r");
 	
 	if(fp==NULL)
@@ -92,7 +104,7 @@ int main()
 	forwardPointer=-1;
 
 	Token* next=NULL;
-
+/*
 	while(1)
 	{	
 		next=getNextToken();
@@ -108,10 +120,12 @@ int main()
 
 */
 
-	printf("PARSED RULES\n");
+	printf("PARSING RULES\n");
 
 	parse("rules.txt");
 	
+	printf("PARSED RULES\n");
+
 	printRules();
 
 	ht_items_list* result;
@@ -124,17 +138,22 @@ int main()
 		result=computeFirstofRule(rules[i].key);		
 		printf("\nFirst = ");
 		printmyList(result);
-		result=computeFollow(rules[i].lhs);		
-		printf("\nFollow = ");
+		result=computeFollow(rules[i].lhs);
+		printf("\n");
+		printf("Follow = ");
 		printmyList(result);
 		printf("\n");		
 	}
 
 	printf("PRINTING THE PARSE TABLE\n");
-
+	
 	create_parse_table();
 	
+	printf("here\n");
+	
 	print_parse_table();
+
+	parseTree();
 
 	exit(0);
 }

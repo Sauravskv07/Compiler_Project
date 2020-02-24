@@ -1,3 +1,11 @@
+/*
+GROUP NO. = 46
+2017A7PS0006P PIKLU PAUL
+2017A7PS0007P RAJABABU SAIKIA
+2017A7PS0090P SAURAV VIRMANI
+2017A7PS0111P SIDDHANT KHARBANDA
+2017A7PS0275P SREYAS RAVICHANDRAN
+*/
 #include "lexer.h"
 #include "hash_table.h"
 
@@ -102,7 +110,7 @@ Token* getNextToken()
 				
 				if(character_read==0)
 				{
-					return NULL;
+					return createToken(ht_search(mapping_table,"$")->index,0,0,LN);
 				}
 				else if(character_read=='(')
 				{

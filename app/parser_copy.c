@@ -38,7 +38,7 @@ error_list* parseTree(){
 
 	ht_item* end_marker=(ht_item *)malloc(sizeof(ht_item));
 
-	end_marker->index=-2;
+	end_marker->index=-1;
 
 	end_marker->key=NULL;
 
@@ -57,17 +57,10 @@ error_list* parseTree(){
 	while(peek(st)!=NULL)
 	{
 		top=peek(st);
-
-		printf("Popped Element = %s\n",top->key);
-
-		st=pop(st);
-
-		if(top->index==ht_search(mapping_table,"e")->index)
-		{
-			continue;
-		}
 		
-		if(top->index==-2)
+		llpst=pop(st);
+		
+		if(top->index==-1)
 		{
 			currentNode=currentNode->parent;
 			continue;
@@ -87,7 +80,14 @@ error_list* parseTree(){
 
 			return errors;
 
-		}	
+		}
+
+		printf("Popped Element = %s\n",top->key);	
+
+		if(top->index==ht_search(mapping_table,"e")->index)
+		{
+			continue;
+		}
 
 		printf("HOLA2 \n");
 	
@@ -144,10 +144,11 @@ error_list* parseTree(){
 			}
 			
 			printf("NUmber of rules of RHS = %d\n",i);
-			for(int j=i-1;j>=0;j--)
+			for(int j=i-1;j>=1;j--)
 			{
 				st=push(st,rhs_rev[j]);
 			}
+			st=push(st,rhs_rev[0]);
 
 			isFirst=1;
 
@@ -194,7 +195,7 @@ error_list* parseTree(){
 		}
 	}
 	
-	if((nextToken->index)!=(ht_search(mapping_table,"$")->index))
+	if(nextToken!=NULL)
 	{
 			printf("Extra Tokens Found \n");
 			error_list* new_error=(error_list*)malloc(sizeof(error_list));
@@ -202,9 +203,6 @@ error_list* parseTree(){
 			new_error->next=errors;
 			errors=new_error;
 	}
-
-	printf("Done Parsing\n");
-
 	return errors;
 }
 
