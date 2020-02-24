@@ -9,6 +9,7 @@ GROUP NO. = 46
 #include "lexer.h"
 #include "hash_table.h"
 
+int endReached=0;
 int j_pointer=0;
 int state=1;
 int LN=1;
@@ -89,6 +90,9 @@ Token* getNextToken()
 {
 	state=1;
 
+	if(endReached==1)
+		return NULL;
+		
 	while(1)
 	{
 		forwardPointer++;
@@ -110,7 +114,8 @@ Token* getNextToken()
 				
 				if(character_read==0)
 				{
-					return NULL;//createToken(ht_search(mapping_table,"$")->index,0,0,LN);
+					endReached=1;
+					return createToken(ht_search(mapping_table,"$")->index,0,0,LN);
 				}
 				else if(character_read=='(')
 				{

@@ -17,7 +17,19 @@ GROUP NO. = 46
 #include <string.h>
 #include <stdlib.h>
 
-
+void validateLexError(Token* nextToken)
+{
+		while(nextToken!=NULL && nextToken->index==-1)
+		{
+				printf("INVALID TOKEN. LEXICAL ERROR.\n");
+				printf("%s %d",nextToken->lexeme,nextToken->LN);
+				error_list* new_error=(error_list*)malloc(sizeof(error_list));
+				new_error->tk=nextToken;
+				new_error->next=errors;
+				errors=new_error;
+				nextToken=getNextToken();
+		}
+}
 error_list* parseTree(){
 
 	root=NULL;
@@ -55,6 +67,7 @@ error_list* parseTree(){
 	root = insertAsChild(NULL,temp,2);
 	
 	nextToken=getNextToken();
+	validateLexError(nextToken);
 	//while(nextToken!=NULL)
 	//{printf("Extra Tokens Found %d \n",nextToken->index);nextToken=getNextToken();}
 
@@ -95,6 +108,7 @@ error_list* parseTree(){
 				if(currentNode->right!=NULL)currentNode = currentNode->right;
 				else st=pop(st);
 				nextToken=getNextToken();
+				validateLexError(nextToken);
 				break;
 			}
 			else if(top->tag==2 && parse_table[top->index][nextToken->index]!=-1)
@@ -132,12 +146,20 @@ error_list* parseTree(){
 				break;
 			}
 			else
-			{nextToken=getNextToken();}
+			{
+				printf("UNEXPECTED TOKEN.\n");
+				printf("%s %d",nextToken->lexeme,nextToken->LN);
+				error_list* new_error=(error_list*)malloc(sizeof(error_list));
+				new_error->tk=nextToken;
+				new_error->next=errors;
+				errors=new_error;
+				nextToken=getNextToken();
+				validateLexError(nextToken);
+			}
 		}
-		if((nextToken==NULL||nextToken->index==0) && peek(st)!=bottom)
+		if((nextToken==NULL) && peek(st)!=bottom)
 		{
 			printf("REACHED END OF PROGRAM WITHOUT COMPLETE PARSE TREE GENERATION\n");
-			printf("%s",peek(st)->key);
 			error_list* new_error=(error_list*)malloc(sizeof(error_list));
 			new_error->tk=nextToken;
 			new_error->next=errors;
@@ -149,7 +171,7 @@ error_list* parseTree(){
 	
 	if(nextToken->index!=0)
 	{
-			printf("Extra Tokens Found %d \n",nextToken->index);
+			printf("Extra Tokens Found %s %d \n",nextToken->lexeme,nextToken->LN);
 			error_list* new_error=(error_list*)malloc(sizeof(error_list));
 			new_error->tk=nextToken;
 			new_error->next=errors;
@@ -157,4 +179,3 @@ error_list* parseTree(){
 	}
 	return errors;
 }
-
