@@ -139,6 +139,13 @@ int main()
 	print_parse_table();
 
 	parseTree();
+	
+	//printf("%s",root->data->nonterm->key);
+	//printf("%s",root->child->data->nonterm->key);
+	//printf("%s",root->child->child->data->nonterm->key);
+	//printf("%s",root->child->child->right->child->data->nonterm->key);
+	//printf("%s",root->child->child->child->child->data->nonterm->key);
+	printTraversal2(root);
 
 	exit(0);
 }

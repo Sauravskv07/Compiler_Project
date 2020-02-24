@@ -52,6 +52,7 @@ treenode *insertAsChild(treenode *parent, node *child, Type tag)
 	t->data = child;
 	t->tag = tag;
 	t->right = NULL;
+	t->child = NULL;
 	t->parent = parent;
 	if(parent==NULL)
 	{root=t;}
@@ -67,6 +68,7 @@ treenode *insertAsNextRightSibling(treenode *child, node *right, Type tag)
 	t->data = right;
 	t->tag = tag;
 	t->right = NULL;
+	t->child = NULL;
 	t->parent = child->parent;
 	child->right = t;
 	return t;
@@ -98,6 +100,28 @@ void printTraversal(treenode *root)
 			printTraversal(t->child);
 			printf("%s",t->data->nonterm->key);
 			printTraversal(t->child->right);
+		}
+	}
+}
+
+void printTraversal2(treenode *root)
+{
+	treenode *t = root;
+	if(t!=NULL)
+	{
+		if(t->child==NULL)
+		{
+			printf("wjgduywg");
+			if(t->tag!=NONTERMINAL)
+			printf("%s",t->data->token->lexeme);
+			else
+			printf("%s",t->data->nonterm->key);
+		}
+		else
+		{
+			printf("%s",t->data->nonterm->key);
+			printTraversal(t->child);
+			printTraversal(t->right);
 		}
 	}
 }

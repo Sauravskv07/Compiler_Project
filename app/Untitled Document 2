@@ -62,9 +62,9 @@ error_list* parseTree(){
 	node* temp=(node *)malloc(sizeof(node));
 	temp->nonterm = start;
 	
-	root = insertAsChild(NULL,temp,2);
 	treenode* currentNode = root;
 	treenode* tempNode = NULL;
+	root = insertAsChild(NULL,temp,2);
 	
 	nextToken=getNextToken();
 	validateLexError(nextToken);
@@ -74,9 +74,6 @@ error_list* parseTree(){
 	while(peek(st)!=NULL && peek(st)!=bottom)
 	{
 		//printf("ugiubkjnkj %s\n",peek(st)->key);
-		printf("test at %s\n", currentNode->data->nonterm->key);
-			printf("test at %s\n", peek(st)->key);
-			printf("test at %sppp\n", nextToken->lexeme);
 		top=peek(st);
 		if(top==end_marker){
 			while(peek(st)==end_marker)
@@ -86,26 +83,20 @@ error_list* parseTree(){
 				tempNode = currentNode;
 				if(currentNode!=NULL)
 				currentNode=currentNode->parent;
-				//else printf("aaaaa\n");
+				printf("aaaaa\n");
 			}
-			if(tempNode!=NULL && tempNode->right!=NULL)
-			currentNode = tempNode->right;
+			if(currentNode->right!=NULL)
+			{currentNode = currentNode->right;printf("bbbbbbb\n");}
+			else {}
+			printf("test %s : \n",currentNode->data->nonterm->key);
 			//printf("ugiubkjnkj2 %s\n",peek(st)->key);
 			continue;}
-		//printf("Popped Element = %s\n",top->key);	
-		//printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %d",top);
-		if(top!=NULL && top->index==ht_search(mapping_table,"e")->index)
+		printf("Popped Element = %s\n",top->key);	
+		if(top->index==ht_search(mapping_table,"e")->index)
 		{
-			if(currentNode==NULL)
-			printf("jdgujuasd");
-			//printf("test at %s", currentNode->data->nonterm->key);
-			currentNode = currentNode->parent;//st=pop(st);
-			while(currentNode!=NULL && currentNode->right==NULL){currentNode = currentNode->parent;st=pop(st);}
-			if(currentNode!=NULL){currentNode = currentNode->right;st=pop(st);}
-			//printf("test at %s", currentNode->data->nonterm->key);
-			//printf("test at %s", peek(st)->key);
-			//printf("test at %sppp", nextToken->lexeme);
-			continue;
+			printf("qqqqqqqqqqqqqqqqqqqqq\n");
+			currentNode = currentNode->parent;
+			st=pop(st);continue;
 		}
 
 		
@@ -114,18 +105,15 @@ error_list* parseTree(){
 			if(nextToken==NULL){break;}
 			if(top->tag==1 && top->index == nextToken->index)
 			{
-				//printf("jhsvdbdjasbdjkb %d \n",nextToken->index);
+				printf("jhsvdbdjasbdjkb %d \n",peek(st)->index);
 				st=pop(st);
 				temp=(node *)malloc(sizeof(node));
 				temp->token = nextToken;
 				currentNode = insertAsChild(currentNode,temp,1);
 				//if(currentNode->right!=NULL)currentNode = currentNode->right;
 				//else st=pop(st);
-				//currentNode = currentNode->parent;
-				while(currentNode!=NULL && currentNode->right==NULL){currentNode = currentNode->parent;}
-				currentNode = currentNode->right;
-			//if(currentNode!=NULL){currentNode = currentNode->right;st=pop(st);}
-				//else st=pop(st);
+				currentNode = currentNode->parent;
+				printf("Inserting as token %s : \n",currentNode->data->nonterm->key);
 				nextToken=getNextToken();
 				validateLexError(nextToken);
 				break;
@@ -161,8 +149,8 @@ error_list* parseTree(){
 			}
 			else if(top->tag==2 && parse_table[top->index][ht_search(mapping_table,"e")->index]!=-1)
 			{
-				//printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
 				st=pop(st);
+				printf("Inserting as token e %s : \n",currentNode->data->nonterm->key);
 				break;
 			}
 			else

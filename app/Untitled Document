@@ -74,9 +74,6 @@ error_list* parseTree(){
 	while(peek(st)!=NULL && peek(st)!=bottom)
 	{
 		//printf("ugiubkjnkj %s\n",peek(st)->key);
-		printf("test at %s\n", currentNode->data->nonterm->key);
-			printf("test at %s\n", peek(st)->key);
-			printf("test at %sppp\n", nextToken->lexeme);
 		top=peek(st);
 		if(top==end_marker){
 			while(peek(st)==end_marker)
@@ -88,24 +85,14 @@ error_list* parseTree(){
 				currentNode=currentNode->parent;
 				//else printf("aaaaa\n");
 			}
-			if(tempNode!=NULL && tempNode->right!=NULL)
+			if(tempNode->right!=NULL)
 			currentNode = tempNode->right;
 			//printf("ugiubkjnkj2 %s\n",peek(st)->key);
 			continue;}
 		//printf("Popped Element = %s\n",top->key);	
-		//printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa %d",top);
-		if(top!=NULL && top->index==ht_search(mapping_table,"e")->index)
+		if(top->index==ht_search(mapping_table,"e")->index)
 		{
-			if(currentNode==NULL)
-			printf("jdgujuasd");
-			//printf("test at %s", currentNode->data->nonterm->key);
-			currentNode = currentNode->parent;//st=pop(st);
-			while(currentNode!=NULL && currentNode->right==NULL){currentNode = currentNode->parent;st=pop(st);}
-			if(currentNode!=NULL){currentNode = currentNode->right;st=pop(st);}
-			//printf("test at %s", currentNode->data->nonterm->key);
-			//printf("test at %s", peek(st)->key);
-			//printf("test at %sppp", nextToken->lexeme);
-			continue;
+			st=pop(st);continue;
 		}
 
 		
@@ -118,14 +105,16 @@ error_list* parseTree(){
 				st=pop(st);
 				temp=(node *)malloc(sizeof(node));
 				temp->token = nextToken;
-				currentNode = insertAsChild(currentNode,temp,1);
+				currentNode = insertAsChild(currentNode,temp,2);
+				printf("Inserting as token %s : %s \n", currentNode->parent->data->nonterm->key,currentNode->data->token->lexeme);
 				//if(currentNode->right!=NULL)currentNode = currentNode->right;
-				//else st=pop(st);
-				//currentNode = currentNode->parent;
-				while(currentNode!=NULL && currentNode->right==NULL){currentNode = currentNode->parent;}
-				currentNode = currentNode->right;
-			//if(currentNode!=NULL){currentNode = currentNode->right;st=pop(st);}
-				//else st=pop(st);
+				//else {
+				//while(currentNode->right==NULL){currentNode = currentNode->parent;}
+				//currentNode = currentNode->right; //}
+				currentNode = currentNode->parent;
+				while(currentNode->right==NULL){currentNode = currentNode->parent;}
+				currentNode = currentNode->right; //}
+				printf("Inserting as token %s : %s \n", currentNode->parent->data->nonterm->key,currentNode->data->nonterm->key);
 				nextToken=getNextToken();
 				validateLexError(nextToken);
 				break;
@@ -138,7 +127,9 @@ error_list* parseTree(){
 				rhs_rev[0]=rule->node;
 				temp=(node *)malloc(sizeof(node));
 				temp->nonterm = rhs_rev[0];
+				printf("Inserting as child of %s :  \n",currentNode->data->nonterm->key);
 				currentNode = insertAsChild(currentNode,temp,2);
+				printf("Inserting as child of %s : %s \n",currentNode->parent->data->nonterm->key,currentNode->data->nonterm->key);
 				tempNode = currentNode;
 				rule=rule->next;
 				while(rule)
@@ -147,6 +138,7 @@ error_list* parseTree(){
 						temp=(node *)malloc(sizeof(node));
 						temp->nonterm = rhs_rev[i];
 						tempNode = insertAsNextRightSibling(tempNode,temp,2);
+						printf("Inserting as right %s : %s \n", tempNode->parent->data->nonterm->key,tempNode->data->nonterm->key);
 						i++;	
 						rule=rule->next;
 					}
@@ -161,8 +153,18 @@ error_list* parseTree(){
 			}
 			else if(top->tag==2 && parse_table[top->index][ht_search(mapping_table,"e")->index]!=-1)
 			{
-				//printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
 				st=pop(st);
+				temp=(node *)malloc(sizeof(node));
+				temp->nonterm = ht_search(mapping_table,"e");
+				currentNode = insertAsChild(currentNode,temp,2);
+				printf("Inserting as token %s : %s \n", currentNode->parent->data->nonterm->key,currentNode->data->token->lexeme);
+				//if(currentNode->right!=NULL)currentNode = currentNode->right;
+				//else {
+				//while(currentNode->right==NULL){currentNode = currentNode->parent;}currentNode = currentNode->right; //}
+				currentNode = currentNode->parent;
+				while(currentNode->right==NULL){currentNode = currentNode->parent;}
+				currentNode = currentNode->right; //}
+				printf("Inserting as token %s : %s \n", currentNode->parent->data->nonterm->key,currentNode->data->nonterm->key);
 				break;
 			}
 			else

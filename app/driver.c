@@ -134,7 +134,7 @@ int main()
 	//printf("PRINTING THE PARSE TABLE\n");
 
 
-	fp=(FILE*)fopen("t6.txt","r");
+	fp=(FILE*)fopen("t2.txt","r");
 	
 	if(fp==NULL)
 	{
@@ -155,6 +155,10 @@ int main()
 	//print_parse_table();
 
 	parseTree();
+	
+	//printf("%s",root->data->nonterm->key);
+	//printf("%s",root->child->data->nonterm->key);
+	printTraversal2(root);
 
 	exit(0);
 }
