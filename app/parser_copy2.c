@@ -99,9 +99,9 @@ error_list* parseTree(){
 			if(currentNode==NULL)
 			printf("jdgujuasd");
 			//printf("test at %s", currentNode->data->nonterm->key);
-			currentNode = currentNode->parent;//st=pop(st);
+			//currentNode = currentNode->parent;//st=pop(st);
 			while(currentNode!=NULL && currentNode->right==NULL){currentNode = currentNode->parent;st=pop(st);}
-			if(currentNode!=NULL){currentNode = currentNode->right;st=pop(st);}
+			//if(currentNode!=NULL){currentNode = currentNode->right;st=pop(st);}
 			//printf("test at %s", currentNode->data->nonterm->key);
 			//printf("test at %s", peek(st)->key);
 			//printf("test at %sppp", nextToken->lexeme);
@@ -121,8 +121,8 @@ error_list* parseTree(){
 				currentNode = insertAsChild(currentNode,temp,1);
 				//if(currentNode->right!=NULL)currentNode = currentNode->right;
 				//else st=pop(st);
-				//currentNode = currentNode->parent;
-				while(currentNode!=NULL && currentNode->right==NULL){currentNode = currentNode->parent;}
+				currentNode = currentNode->parent;
+				while(currentNode!=NULL && currentNode->right==NULL){currentNode = currentNode->parent;st=pop(st);}
 				currentNode = currentNode->right;
 			//if(currentNode!=NULL){currentNode = currentNode->right;st=pop(st);}
 				//else st=pop(st);

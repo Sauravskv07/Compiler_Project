@@ -94,12 +94,17 @@ void printTraversal(treenode *root)
 		{
 			if(t->tag!=NONTERMINAL)
 			printf("%s",t->data->token->lexeme);
+			else
+			printf("%s",t->data->nonterm->key);
 		}
 		else
 		{
 			printTraversal(t->child);
 			printf("%s",t->data->nonterm->key);
-			printTraversal(t->child->right);
+			//printf("-");
+			t=t->child;
+			while(t!=NULL)			
+			{printTraversal(t->right);t=t->right;}
 		}
 	}
 }
@@ -111,7 +116,6 @@ void printTraversal2(treenode *root)
 	{
 		if(t->child==NULL)
 		{
-			printf("wjgduywg");
 			if(t->tag!=NONTERMINAL)
 			printf("%s",t->data->token->lexeme);
 			else
@@ -120,8 +124,9 @@ void printTraversal2(treenode *root)
 		else
 		{
 			printf("%s",t->data->nonterm->key);
-			printTraversal(t->child);
-			printTraversal(t->right);
+			printTraversal2(t->child);
+			while(t!=NULL)			
+			{printTraversal2(t->right);t=t->right;}
 		}
 	}
 }

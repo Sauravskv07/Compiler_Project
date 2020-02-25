@@ -145,7 +145,7 @@ int main()
 	//printf("%s",root->child->child->data->nonterm->key);
 	//printf("%s",root->child->child->right->child->data->nonterm->key);
 	//printf("%s",root->child->child->child->child->data->nonterm->key);
-	printTraversal2(root);
+	printTraversal(root);
 
 	exit(0);
 }
